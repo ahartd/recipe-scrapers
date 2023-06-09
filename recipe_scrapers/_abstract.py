@@ -1,5 +1,6 @@
 # mypy: disallow_untyped_defs=False
 import inspect
+import json
 from collections import OrderedDict
 from typing import Dict, List, Optional, Tuple, Union
 from urllib.parse import urljoin
@@ -37,12 +38,7 @@ class AbstractScraper:
             self.url = url
         else:
             assert url is not None, "url required for fetching recipe data"
-            resp = requests.get(
-                url,
-                headers=HEADERS,
-                proxies=proxies,
-                timeout=timeout,
-            )
+            resp = self.get_response(url, proxies, timeout)
             self.page_data = resp.content
             self.url = resp.url
 
@@ -160,6 +156,9 @@ class AbstractScraper:
     def reviews(self):
         raise NotImplementedError("This should be implemented.")
 
+    def metadata(self):
+        return None
+
     def links(self):
         invalid_href = {"#", ""}
         links_html = self.soup.findAll("a", href=True)
@@ -184,3 +183,22 @@ class AbstractScraper:
             except Exception:
                 pass
         return json_dict
+
+    @classmethod
+    def get_response(
+        cls, url: str, proxies: Optional[Dict[str, str]] = None,
+        timeout: Optional[Union[float, Tuple[float, float], Tuple[float, None]]] = None
+    ):
+        return requests.get(
+            url,
+            headers=HEADERS,
+            proxies=proxies,
+            timeout=timeout,
+        )
+
+    @classmethod
+    def get_all_recipes_urls(
+        cls, proxies: Optional[Dict[str, str]] = None,
+        timeout: Optional[Union[float, Tuple[float, float], Tuple[float, None]]] = None
+    ):
+        return []
