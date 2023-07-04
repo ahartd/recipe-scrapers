@@ -213,6 +213,9 @@ class AllRecipesUser(AbstractScraper):
             )
         return reviews
 
+    def review_count(self):
+        return None
+
     def cuisine(self):
         return None
 
