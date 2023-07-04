@@ -29,6 +29,7 @@ class SchemaOrgFillPlugin(PluginInterface):
         "instructions",
         "ratings",
         "reviews",
+        "review_count",
         "links",
         "language",
         "nutrients",

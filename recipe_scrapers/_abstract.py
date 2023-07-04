@@ -156,6 +156,9 @@ class AbstractScraper:
     def reviews(self):
         raise NotImplementedError("This should be implemented.")
 
+    def review_count(self):
+        raise NotImplementedError("This should be implemented.")
+
     def metadata(self):
         return None
 
